@@ -1,0 +1,39 @@
+{
+  "name": "rent-house-line-notify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "lodash": "^4.17.21",
+    "node-cache": "^5.1.2",
+    "node-cron": "^3.0.0",
+    "nodemon": "^2.0.16",
+    "web-push": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  },
+  "imports": {
+    "#constants": "./constants.js",
+    "#controllers": "./controllers/index.js",
+    "#routes": "./routes/index.js",
+    "#schedules": "./schedules/index.js",
+    "#services": "./services/index.js"
+  },
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  }
+}
