@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-// axios.defaults.timeout = 5000;
-
 export const getHeaders = async () => {
   const response = await axios.get('https://rent.591.com.tw');
 
