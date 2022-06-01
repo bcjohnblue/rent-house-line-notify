@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import { sendNotifyWithRentHouse } from '#schedules';
+import { sendNotifyWithRentHouseSchedule } from '#schedules';
 import { CacheService } from '#services';
 
 dotenv.config();
@@ -12,5 +12,5 @@ CacheService.start();
 app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express running → PORT ${server.address().port}`);
-  sendNotifyWithRentHouse();
+  sendNotifyWithRentHouseSchedule();
 });
