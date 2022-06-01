@@ -1,22 +1,27 @@
 import axios from 'axios';
 
 export const getHeaders = async () => {
-  const response = await axios.get('https://rent.591.com.tw');
+  try {
+    const response = await axios.get('https://rent.591.com.tw');
 
-  const regExp = /<meta name="csrf-token" content="([A-Za-z0-9]*)">/gi;
-  const csrfToken = regExp.exec(response.data)[1];
+    const regExp = /<meta name="csrf-token" content="([A-Za-z0-9]*)">/gi;
+    const csrfToken = regExp.exec(response.data)[1];
 
-  const T591TokenCookie = response.headers['set-cookie'].find((cookie) => cookie.includes('T591_TOKEN'));
-  const T591Token = T591TokenCookie.match(/T591_TOKEN=(.+?);/)[1];
+    const T591TokenCookie = response.headers['set-cookie'].find((cookie) => cookie.includes('T591_TOKEN'));
+    const T591Token = T591TokenCookie.match(/T591_TOKEN=(.+?);/)[1];
 
-  const Cookie = response.headers['set-cookie'].find((cookie) => cookie.includes('591_new_session'));
+    const Cookie = response.headers['set-cookie'].find((cookie) => cookie.includes('591_new_session'));
 
-  const headers = {
-    'X-CSRF-TOKEN': csrfToken,
-    T591_TOKEN: T591Token,
-    Cookie,
-  };
-  return headers;
+    const headers = {
+      'X-CSRF-TOKEN': csrfToken,
+      T591_TOKEN: T591Token,
+      Cookie,
+    };
+    return headers;
+  } catch (error) {
+    console.error('getHeaders error', error);
+    return error;
+  }
 };
 
 export const getHouseListData = async (query, options) => {
