@@ -18,6 +18,7 @@ CacheService.start();
 app.set('port', process.env.PORT || 5000);
 const server = app.listen(app.get('port'), () => {
   console.log(`Express running → PORT ${server.address().port}`);
-  if (process.env.APP_URL) pingSchedule(process.env.APP_URL);
+
+  if (process.env.APP_URL.startsWith('http')) pingSchedule(process.env.APP_URL);
   sendNotifyWithRentHouseSchedule();
 });

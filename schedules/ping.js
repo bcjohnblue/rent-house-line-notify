@@ -10,7 +10,7 @@ const ping = async (host) => {
 };
 
 export const pingSchedule = (host) => {
-  cron.schedule('*/30 9-23 * * *', () => ping(host), {
+  cron.schedule('*/29 9-23 * * *', () => ping(host), {
     timezone: 'Asia/Taipei',
   });
 };

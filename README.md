@@ -12,24 +12,20 @@ Step 1.
 
   決定多久去 591 租屋網要資料，設定格式請參考：https://crontab.cronhub.io/
 
-  預設值： `30 9-23 * * *`， 9:30 - 23:30，整點過後 30 分鐘 (09:30, 10:30, ... 23:30)
+  預設值： `30 9-23 * * *`， 9:30 - 23:30，整點過後 30 分鐘執行 (09:30, 10:30, ... 23:30)
 
 - RENT_LIST_QUERY
 
   591 列表搜尋的條件
 
-  ex.
-
-  https://rent.591.com.tw/?section=3,4,10&searchtype=1&kind=1&rentprice=20000,40000&order=posttime&orderType=desc
+  ex. https://rent.591.com.tw/?section=3,4,10&searchtype=1&kind=1&rentprice=20000,40000&order=posttime&orderType=desc
 
 - RENT_INFO_QUERY
 
-  自行設定額外過濾的條件
+  額外過濾的條件 (需要自行在程式裡處理邏輯 `schedules/notify -> sendNotifyWithRentHouse`)
 
-  預設值：
-
-  - 最小坪數: 18 坪以上
-  - 排除捷運站: ['中山', '民權西路', '中山國小', '雙連', '東湖', '內湖', '港墘']
+  - minArea: 最小坪數
+  - excludeMRTs: 排除捷運站
 
 Step 2.
 
@@ -51,6 +47,14 @@ npm start
 
 <img alt="line notify image" src="./assets/line.jpg" width="30%">
 
+## Deploy (optional)
+
+基本上執行 `npm start` 後即可在本機進行推播，但如果你想要將程式部署到雲端的話可以設定 `.env` 中的 `APP_URL` 指向你部署的網址，如此將固定過一段時間 ping 你部署的網站，以防止一些雲服務平台在閒置超過一定時間後會自動關閉 app 導致推播失效 (例如：[heroku 免費方案會在網站閒置 30 分鐘後自動關閉 app](https://dev.to/unorthodev/prevent-your-app-from-idling-on-heroku-2lmc))
+
+設定 ping 的檔案位置：`schedules/ping.js` -> `pingSchedule`
+
+預設執行時間：`'*/29 9-23 * * *'`，在 9:00 - 23:59 時段內，每 29 分鐘會 ping 一次 `APP_URL`
 
 <br />
-最後更新日期：2022/05/31
+
+最後更新日期：2022/06/03

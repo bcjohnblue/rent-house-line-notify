@@ -48,7 +48,7 @@ const sendNotifyWithRentHouse = async () => {
       newData = newData.slice(0, targetIndex);
     }
     console.log('LATEST_POST_ID', cache.get('LATEST_POST_ID'));
-    console.log('NEXT_LATEST_POST_ID', newData[0]?.post_id);
+    console.log('NEXT_LATEST_POST_ID', newData[0]?.post_id || cache.get('LATEST_POST_ID'));
     if (newData.length) cache.set('LATEST_POST_ID', newData[0].post_id);
 
     newData.reverse().forEach((data) => {
