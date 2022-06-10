@@ -33,9 +33,6 @@ const sendNotifyWithRentHouse = async () => {
     let newData = houseListResponse.data.data.data;
     newData = newData
       .filter(
-        (d) => +d.area >= RENT_INFO_QUERY.minArea,
-      )
-      .filter(
         (d) => RENT_INFO_QUERY.excludeMRTs
           .every((MRT) => !new RegExp(MRT).test(d.surrounding?.desc)),
       );

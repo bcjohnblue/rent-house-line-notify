@@ -18,13 +18,12 @@ Step 1.
 
   591 列表搜尋的條件
 
-  ex. https://rent.591.com.tw/?section=3,4,10&searchtype=1&kind=1&rentprice=20000,40000&order=posttime&orderType=desc
+  ex. https://rent.591.com.tw/?kind=1&showMore=1&order=posttime&orderType=desc&section=3,4,10&searchtype=1&rentprice=20000,30000&area=18,
 
 - RENT_INFO_QUERY
 
   額外過濾的條件 (需要自行在程式裡處理邏輯 `schedules/notify -> sendNotifyWithRentHouse`)
 
-  - minArea: 最小坪數
   - excludeMRTs: 排除捷運站
 
 Step 2.
@@ -57,4 +56,4 @@ npm start
 
 <br />
 
-最後更新日期：2022/06/03
+最後更新日期：2022/06/10
