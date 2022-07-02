@@ -12,7 +12,7 @@ export const RENT_LIST_QUERY = {
   // 整層住家
   kind: '1',
   // 租金範圍
-  rentprice: '20000,30000',
+  rentprice: '15000,30000',
   // 坪數
   area: '18,',
   // 最新 -> 舊 排序
