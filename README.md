@@ -12,7 +12,7 @@ Step 1.
 
   決定多久去 591 租屋網要資料，設定格式請參考：https://crontab.cronhub.io/
 
-- RENT_LIST_QUERY
+- RENT_LIST_QUERY, RENT_LIST_QUERY_1 (第二組條件)
 
   591 列表搜尋的條件
 
