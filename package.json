@@ -2,7 +2,7 @@
   "name": "rent-house-line-notify",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "functions/index.js",
   "type": "module",
   "scripts": {
     "start": "nodemon index.js"
@@ -11,13 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.27.2",
+    "@google-cloud/functions-framework": "^3.0.0",
+    "@google-cloud/storage": "^7.0.0",
+    "axios": "^1.6.0",
     "body-parser": "^1.18.3",
-    "dotenv": "^6.2.0",
-    "express": "^4.16.4",
-    "node-cache": "^5.1.2",
-    "node-cron": "^3.0.0",
-    "nodemon": "^2.0.16"
+    "dotenv": "^16.0.0",
+    "express": "^4.16.4"
   },
   "devDependencies": {
     "eslint": "^8.16.0",
@@ -30,6 +29,6 @@
     "#services": "./services/index.js"
   },
   "engines": {
-    "node": "^14.13.1 || >=16.0.0"
+    "node": ">=22.0.0"
   }
 }

@@ -1,0 +1,20 @@
+# Git
+.git
+.gitignore
+
+# 本機開發設定
+.env
+.vscode
+
+# 不需上傳到 GCP 的目錄
+functions/node_modules
+node_modules
+
+# 開發工具
+.eslintrc.cjs
+.eslintignore
+nodemon.json
+
+# 舊入口（本機用，Cloud Run Functions 用 functions/index.js）
+bin
+assets

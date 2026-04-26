@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
-import cron from 'node-cron';
-import {APIService, CacheService} from '#services';
-import {RENT_LIST_QUERY, RENT_INFO_QUERY, CRON_SYNTEX} from '#constants';
+import { APIService, CacheService } from '#services';
+import { RENT_LIST_QUERY, RENT_INFO_QUERY } from '#constants';
 
 const retrieveHeaders = async () => {
     try {
@@ -9,7 +8,7 @@ const retrieveHeaders = async () => {
         if (cache.has('HEADERS')) return cache.get('HEADERS');
 
         const headers = await APIService.getHeaders(RENT_LIST_QUERY);
-        cache.set('HEADERS', headers);
+        await cache.set('HEADERS', headers);
 
         return headers;
     } catch (error) {
@@ -18,7 +17,7 @@ const retrieveHeaders = async () => {
     }
 };
 
-const sendNotifyWithRentHouse = async ({rentListQuery, cacheKey}) => {
+export const sendNotifyWithRentHouse = async ({ rentListQuery, cacheKey }) => {
     try {
         console.log(
             'send the line notification',
@@ -45,6 +44,14 @@ const sendNotifyWithRentHouse = async ({rentListQuery, cacheKey}) => {
             const lastestPostId = cache.get(cacheKey);
             const postIds = newData.map((d) => d.post_id);
             const targetIndex = postIds.indexOf(lastestPostId);
+
+            // 修正：當 Cache 記錄的物件已從列表消失時，不推送任何物件
+            if (targetIndex === -1) {
+                console.log('cached post_id not found in list, updating cache only');
+                if (newData.length) await cache.set(cacheKey, newData[0].post_id);
+                return;
+            }
+
             newData = newData.slice(0, targetIndex);
         }
         console.log('cacheKey', cache.get(cacheKey));
@@ -52,17 +59,12 @@ const sendNotifyWithRentHouse = async ({rentListQuery, cacheKey}) => {
             'NEXT_cacheKey',
             newData[0]?.post_id || cache.get(cacheKey)
         );
-        if (newData.length) cache.set(cacheKey, newData[0].post_id);
+        if (newData.length) await cache.set(cacheKey, newData[0].post_id);
 
-        newData.reverse().forEach((data) => {
-            const {section_name, kind_name, price, unit, post_id} = data;
-            const mobileLink = `https://m.591.com.tw/v2/rent/${post_id}`;
-            const pcLink = `https://rent.591.com.tw/home/${post_id}`;
-
-            APIService.sendNotify({
-                message: `\r\n${section_name}，${kind_name}出租\r\n${price} ${unit}，詳情：\r\n${mobileLink}\r\n${pcLink}`,
-            });
-        });
+        // 使用 Flex Carousel 批量推播（最新在前）
+        if (newData.length) {
+            await APIService.sendFlexCarousel(newData);
+        }
 
         console.log(
             'send post_ids',
@@ -71,10 +73,4 @@ const sendNotifyWithRentHouse = async ({rentListQuery, cacheKey}) => {
     } catch (error) {
         console.error('sendNotifyWithRentHouse error', error);
     }
-};
-
-export const sendNotifyWithRentHouseSchedule = ({rentListQuery, cacheKey}) => {
-    cron.schedule(CRON_SYNTEX, () => sendNotifyWithRentHouse({rentListQuery, cacheKey}), {
-        timezone: 'Asia/Taipei',
-    });
 };
