@@ -5,10 +5,11 @@ const BUCKET_NAME = process.env.GCS_BUCKET_NAME;
 const CACHE_FILE = 'cache.json';
 
 // ─── 本地 No-Cache（GCS_BUCKET_NAME 未設定時使用）──────────────────────────
+// has 回 true + get 回 [] → 所有物件都被視為「未推過」，每次推全部
 const noCache = {
-  has: () => false,           // 永遠 cache miss → 推播全部物件
-  get: () => undefined,
-  set: async () => {},        // no-op，不儲存任何東西
+  has: () => true,
+  get: () => [],
+  set: async () => {},
 };
 
 // ─── GCS Cache（GCS_BUCKET_NAME 已設定時使用）────────────────────────────────
@@ -25,7 +26,11 @@ const loadGCS = async () => {
   try {
     const file = getStorage().bucket(BUCKET_NAME).file(CACHE_FILE);
     const [exists] = await file.exists();
-    gcsData = exists ? JSON.parse((await file.download())[0].toString()) : {};
+    const raw = exists ? JSON.parse((await file.download())[0].toString()) : {};
+    // 確保所有 value 都是陣列（舊格式或意外資料一律歸零）
+    gcsData = Object.fromEntries(
+      Object.entries(raw).map(([k, v]) => [k, Array.isArray(v) ? v : []]),
+    );
   } catch (error) {
     console.error('loadGCS error', error.message);
     gcsData = {};
@@ -36,7 +41,7 @@ const saveGCS = async () => {
   try {
     await getStorage().bucket(BUCKET_NAME).file(CACHE_FILE).save(
       JSON.stringify(gcsData),
-      { contentType: 'application/json' }
+      { contentType: 'application/json' },
     );
   } catch (error) {
     console.error('saveGCS error', error.message);
