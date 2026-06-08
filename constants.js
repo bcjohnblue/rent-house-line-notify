@@ -14,7 +14,7 @@ export const RENT_LIST_QUERY = {
   // 整層住家
   kind: '1',
   // 租金範圍
-  rentprice: '20000,40000',
+  rentprice: '20000,50000',
   // 坪數 (大於 18 坪)
   area: '20,',
   // 最新 -> 舊 排序
